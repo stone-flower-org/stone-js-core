@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# VS Code
+.vscode/
+.history/
+*.vsix
+
+# JetBrains
+.idea/
+
+# Project
+dist/
+node_modules/
+report/
+*.log
