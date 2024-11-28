@@ -80,11 +80,6 @@ module.exports = {
             group: 'parent',
             position: 'before',
           },
-          {
-            pattern: '@/public/**',
-            group: 'parent',
-            position: 'before',
-          },
         ],
       },
     ],
