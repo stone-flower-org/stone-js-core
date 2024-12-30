@@ -1,4 +1,4 @@
-import { NonNullable, Nullable, ValidObjectKey } from './types';
+import { NonNullable, Nullable, TypeByName, TypeName, ValidObjectKey } from './types';
 
 export const emptyObj = {};
 
@@ -21,3 +21,6 @@ export const areObjectsShallowlyEqual = <O extends object>(a: O, b: O): boolean 
   }
   return true;
 };
+
+// TODO: write unit tests
+export const isType = <T extends TypeName>(a: unknown, type: T): a is TypeByName[T] => typeof a === type;

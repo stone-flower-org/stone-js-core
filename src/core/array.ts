@@ -57,3 +57,12 @@ export const binaryInsert = <T = unknown>(sortedArr: T[], comparator: Comparator
     insert(sortedArr, found === -1 ? from + Number(predicted > 0) : found, item);
   });
 };
+
+// TODO: write unit tests
+export const forEach = <T>(iterator: Iterator<T>, callback: (item: T) => void) => {
+  let res = iterator.next();
+  while (!res.done) {
+    callback(res.value);
+    res = iterator.next();
+  }
+};

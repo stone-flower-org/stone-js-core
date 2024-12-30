@@ -1,56 +1,47 @@
-import { Func } from '@/src/core';
+import { Args } from '@/src/core';
 
-export type SubscribeListenerFunc<A extends unknown[]> = (...args: A) => void;
+export type ListenerFunc<A extends Args = Args> = (...args: A) => unknown;
 
-export type UnsubscribeFunc = () => void;
+export interface IEventBus extends Omit<EventBus, 'create'> {}
 
-export type SubscribeFunc<A extends unknown[]> = (listener: SubscribeListenerFunc<A>) => UnsubscribeFunc;
+export class EventBus {
+  private _listenersStore: Map<string, Set<ListenerFunc>> = new Map();
 
-export type ListenerFunc = Func;
+  static create() {
+    return new this();
+  }
 
-export interface EventBus {
-  on(event: string, listener: ListenerFunc): UnsubscribeFunc;
-  off(event: string, listener: ListenerFunc): void;
-  emit(event: string, ...args: unknown[]): void;
-  removeAllListeners(...events: string[]): void;
+  constructor() {}
+
+  on(event: string, listener: ListenerFunc) {
+    let listeners = this._listenersStore.get(event);
+
+    if (listeners === undefined) {
+      listeners = new Set();
+      this._listenersStore.set(event, listeners);
+    }
+
+    listeners?.add(listener);
+
+    return () => {
+      listeners?.delete(listener);
+    };
+  }
+
+  off(event: string, listener: ListenerFunc) {
+    this._listenersStore.get(event)?.delete(listener);
+  }
+
+  emit(event: string, ...args: Args) {
+    this._listenersStore.get(event)?.forEach((listener) => listener(...args));
+  }
+
+  removeAllListeners(...events: string[]) {
+    if (!events.length) {
+      this._listenersStore.clear();
+      return;
+    }
+
+    events.forEach((event) => this._listenersStore.delete(event));
+  }
 }
-
-export const createEventBus = (): EventBus => {
-  const listenersStore: Map<string, Set<ListenerFunc>> = new Map();
-
-  return {
-    on: (event: string, listener: ListenerFunc) => {
-      let listeners = listenersStore.get(event);
-
-      if (listeners === undefined) {
-        listeners = new Set();
-        listenersStore.set(event, listeners);
-      }
-
-      listeners?.add(listener);
-
-      return () => {
-        listeners?.delete(listener);
-      };
-    },
-    off: (event: string, listener: ListenerFunc) => {
-      listenersStore.get(event)?.delete(listener);
-    },
-    emit: (event, ...args) => {
-      listenersStore.get(event)?.forEach((listener) => listener(...args));
-    },
-    removeAllListeners: (...events: string[]) => {
-      if (!events.length) {
-        listenersStore.clear();
-        return;
-      }
-
-      events.forEach((event) => listenersStore.delete(event));
-    },
-  };
-};
-
-export const createSubscriptionForEventBus =
-  <A extends unknown[]>(eventBus: EventBus, event: string) =>
-  (listener: SubscribeListenerFunc<A>) =>
-    eventBus.on(event, listener as ListenerFunc);

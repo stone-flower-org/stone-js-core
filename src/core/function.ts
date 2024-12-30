@@ -1,5 +1,6 @@
 import { areArraysShallowlyEqual } from './array';
-import { Func, MemoizedFunc } from './types';
+import { isType } from './object';
+import { Args, Class, Func, MemoizedFunc, TypeByName, TypeName } from './types';
 
 export interface MemoizeFuncOptions {
   cacheSize?: number;
@@ -57,3 +58,21 @@ export class FunctionComposer<P = void, R = unknown> {
 }
 
 export const compose = <P = void, R = unknown>(func: (param: P) => R) => new FunctionComposer<P, R>(func);
+
+// TODO: write unit tests
+export const createSingleArgInstanceValidation =
+  <T>(proto: Class<T>, onError?: (...args: Args) => T) =>
+  (...args: Args): T => {
+    if (args[0] instanceof proto) return args[0] as T;
+    if (onError) return onError(...args);
+    throw new Error(`Provided arg must have instance of ${proto.name}`);
+  };
+
+// TODO: write unit tests
+export const createSingleArgTypeValidation =
+  <T extends TypeName>(type: T, onError?: (...args: Args) => TypeByName[T]) =>
+  (...args: Args): TypeByName[T] => {
+    if (isType(args[0], type)) return args[0];
+    if (onError) return onError(...args);
+    throw new Error(`Provided arg must have ${type} type`);
+  };

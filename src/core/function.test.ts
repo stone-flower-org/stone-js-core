@@ -230,7 +230,7 @@ describe('memoizeFunc', () => {
 });
 
 describe('compose', () => {
-  it('should return', () => {
+  it('should return result after running sequance of functions', () => {
     function first(param: number) {
       return String(param + 1);
     }

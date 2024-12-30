@@ -36,12 +36,32 @@ export type Nullable<T> = T | null | undefined;
 
 export type VoidFunc = () => void;
 
-export type Func = (...args: unknown[]) => unknown;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Args = any[];
+
+export type Func = (...args: Args) => unknown;
 
 export type ValidObjectKey = string | number | symbol;
 
-export interface Constructor<P extends unknown[] = unknown[], T = object> {
+export interface Constructor<P extends Args = Args, T = object> {
   new (...args: P): T;
 }
 
+export type Class<T = object> = Constructor<Args, T>;
+
 export type TimeoutId = ReturnType<typeof setTimeout>;
+
+export type TypeByName = {
+  null: null;
+  number: number;
+  string: string;
+  object: object;
+  bigint: bigint;
+  undefined: undefined;
+  boolean: boolean;
+  symbol: symbol;
+};
+
+export type TypeName = keyof TypeByName;
+
+export type Types = TypeByName[TypeName];

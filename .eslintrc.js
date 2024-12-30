@@ -10,6 +10,7 @@ const srcOverride = {
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-unused-vars': 'off', // conflicts with @typescript-eslint/no-unused-vars
     '@typescript-eslint/no-empty-interface': ['off'],
+    '@typescript-eslint/no-empty-object-type': ['off'],
     '@typescript-eslint/no-explicit-any': ['warn'],
     '@typescript-eslint/no-unused-vars': [
       'warn',
