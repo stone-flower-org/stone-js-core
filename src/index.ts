@@ -4,6 +4,7 @@ export * from './context-saver';
 export * from './core';
 export * from './events';
 export * from './graph';
+export * from './html-dom';
 export * from './id-generator';
 export * from './progress';
 export * from './store';
