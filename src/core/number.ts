@@ -22,3 +22,6 @@ export const round = (val: number, { precision = 0, type = RoundType.HALF_UP }: 
   const mul = 10 ** precision;
   return ROUND_BY_TYPE[type](val * mul) / mul;
 };
+
+// TODO: write tests
+export const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
