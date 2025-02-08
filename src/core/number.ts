@@ -25,3 +25,6 @@ export const round = (val: number, { precision = 0, type = RoundType.HALF_UP }: 
 
 // TODO: write tests
 export const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(val, max));
+
+// TODO: write unit tests
+export const randomBetween = (from: number, to: number) => from + Math.floor(Math.random() * (to - from + 1));

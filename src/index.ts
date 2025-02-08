@@ -9,3 +9,4 @@ export * from './id-generator';
 export * from './progress';
 export * from './store';
 export * from './time';
+export * from './touched-map';

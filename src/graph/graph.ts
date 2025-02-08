@@ -74,10 +74,20 @@ export class Graph<ND = unknown, ED = unknown> {
     this._edgeData.set(edgeId, edge[2]);
   }
 
+  addBidirectionalEdge(edge: GraphEdge<ED>) {
+    this.addEdge([edge[0], edge[1], edge[2]]);
+    this.addEdge([edge[1], edge[0], edge[2]]);
+  }
+
   removeEdge(u: string, v: string) {
     const edgeId = this._makeEdgeId(u, v);
     this._edgeData.delete(edgeId);
     this._adjMatrix.get(u)?.delete(v);
+  }
+
+  removeBidirectionalEdge(u: string, v: string) {
+    this.removeEdge(u, v);
+    this.removeEdge(v, u);
   }
 
   getEdgesFrom(u: string): IterableIterator<GraphEdge<ED>> {
