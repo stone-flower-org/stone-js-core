@@ -6,7 +6,7 @@ export type GraphEdge<ED = unknown> = [string, string, ED];
 
 export type GraphNode<ND = unknown> = [string, ND | undefined];
 
-const EDGE_DELIMETER = '$';
+export const EDGE_DELIMETER = '$';
 
 export class Graph<ND = unknown, ED = unknown> {
   _adjMatrix: GraphAdjMatrix;
@@ -31,6 +31,14 @@ export class Graph<ND = unknown, ED = unknown> {
     this._adjMatrix = new Map();
     this._edgeData = new Map();
     this._nodeData = new Map();
+  }
+
+  get nodeSize() {
+    return this._adjMatrix.size;
+  }
+
+  get edgeSize() {
+    return this._edgeData.size;
   }
 
   getNode(u: string): GraphNode<ND> {
@@ -74,20 +82,10 @@ export class Graph<ND = unknown, ED = unknown> {
     this._edgeData.set(edgeId, edge[2]);
   }
 
-  addBidirectionalEdge(edge: GraphEdge<ED>) {
-    this.addEdge([edge[0], edge[1], edge[2]]);
-    this.addEdge([edge[1], edge[0], edge[2]]);
-  }
-
   removeEdge(u: string, v: string) {
     const edgeId = this._makeEdgeId(u, v);
     this._edgeData.delete(edgeId);
     this._adjMatrix.get(u)?.delete(v);
-  }
-
-  removeBidirectionalEdge(u: string, v: string) {
-    this.removeEdge(u, v);
-    this.removeEdge(v, u);
   }
 
   getEdgesFrom(u: string): IterableIterator<GraphEdge<ED>> {
